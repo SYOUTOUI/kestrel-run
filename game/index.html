@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kestrel Run — a bush-plane courier game</title>
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #1a2233; overflow: hidden; }
+  #game { display: block; width: 100vw; height: 100vh; }
+  #fallback { position: fixed; inset: 0; display: none; place-items: center;
+    color: #f2ede0; font: 16px/1.6 system-ui, sans-serif; text-align: center; padding: 24px; }
+</style>
+</head>
+<body>
+<canvas id="game" width="1280" height="720"></canvas>
+<div id="fallback"><div>Kestrel Run needs JavaScript and a canvas-capable browser.<br>
+Kestrel Run には JavaScript と canvas 対応ブラウザが必要です。</div></div>
+<script type="module" src="./src/main.js"></script>
+<script>
+  // If the module fails to boot (old browser, blocked ES modules), say so plainly.
+  window.addEventListener('error', function (e) {
+    if (!window.__kestrelBooted && e && e.message) {
+      document.getElementById('fallback').style.display = 'grid';
+    }
+  }, true);
+  setTimeout(function () {
+    if (!window.__kestrelBooted) document.getElementById('fallback').style.display = 'grid';
+  }, 4000);
+</script>
+</body>
+</html>
