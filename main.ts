@@ -40,8 +40,12 @@ writeFileSync(join(out, "dossier.json"), dossier);
 // Small build report so a human can see at a glance what was handed in.
 // The cap applies to the dossier's text field (the source listing), not to
 // the whole file, which also carries the screenshots as base64.
-const parsed = JSON.parse(dossier);
+const parsed = JSON.parse(new TextDecoder().decode(dossier));
 const textBytes = Buffer.byteLength(parsed.text ?? "");
+const gameFiles = readdirSync(join(out, "game"), { recursive: true })
+  .filter((f) => statSync(join(out, "game", f)).isFile());
+const shotFiles = readdirSync(join(out, "screenshots"));
+const shotBytes = shotFiles.map((f) => statSync(join(out, "screenshots", f)).size);
 console.log(`Kestrel Run dossier written to ${join(out, "dossier.json")}`);
 console.log(`game files: ${gameFiles.length}, screenshots: ${shotFiles.join(", ")}`);
 console.log(`screenshot bytes: ${shotBytes.join(", ")} (cap 262144 each)`);
